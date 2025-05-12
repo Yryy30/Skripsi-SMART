@@ -19,4 +19,8 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
 });
 
+Route::middleware(['auth',])->group(function (){
+    Route::view('balita', 'pages.balita.balita')->name('balita');
+});
+
 require __DIR__.'/auth.php';
