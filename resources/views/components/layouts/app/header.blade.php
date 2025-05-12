@@ -18,6 +18,9 @@
                 <flux:navbar.item icon="layout-grid" :href="route('balita')" :current="request()->routeIs('balita')" wire:navigate>
                     {{ __('Balita') }}
                 </flux:navbar.item>
+                <flux:navbar.item icon="layout-grid" :href="route('data.zscore')" :current="request()->routeIs('data.zscore')" wire:navigate>
+                    {{ __('Data ZScore') }}
+                </flux:navbar.item>
             </flux:navbar>
 
             <flux:spacer />
@@ -82,6 +85,9 @@
                     </flux:navlist.item>
                     <flux:navlist.item icon="layout-grid" :href="route('balita')" :current="request()->routeIs('balita')" wire:navigate>
                     {{ __('Balita') }}
+                    </flux:navlist.item>
+                    <flux:navlist.item icon="layout-grid" :href="route('data.zscore')" :current="request()->routeIs('data.zscore')" wire:navigate>
+                    {{ __('Data ZScore') }}
                     </flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>

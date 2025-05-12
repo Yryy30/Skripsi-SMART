@@ -19,8 +19,10 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
 });
 
-Route::middleware(['auth',])->group(function (){
+Route::middleware(['auth',])->group(function () {
     Route::view('balita', 'pages.balita.balita')->name('balita');
+
+    Route::view('data-zscore', 'pages.smart.zscore')->name('data.zscore');
 });
 
 require __DIR__.'/auth.php';
