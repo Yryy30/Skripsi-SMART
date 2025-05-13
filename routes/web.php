@@ -22,7 +22,7 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth',])->group(function () {
     Route::view('balita', 'pages.balita.balita')->name('balita');
 
-    Route::view('data-zscore', 'pages.smart.zscore')->name('data.zscore');
+    Route::view('kriteria', 'pages.smart.kriteria')->name('kriteria');
 });
 
 require __DIR__.'/auth.php';

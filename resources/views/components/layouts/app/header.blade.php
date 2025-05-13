@@ -18,8 +18,8 @@
                 <flux:navbar.item icon="layout-grid" :href="route('balita')" :current="request()->routeIs('balita')" wire:navigate>
                     {{ __('Balita') }}
                 </flux:navbar.item>
-                <flux:navbar.item icon="layout-grid" :href="route('data.zscore')" :current="request()->routeIs('data.zscore')" wire:navigate>
-                    {{ __('Data ZScore') }}
+                <flux:navbar.item icon="layout-grid" :href="route('kriteria')" :current="request()->routeIs('kriteria')" wire:navigate>
+                    {{ __('Kriteria') }}
                 </flux:navbar.item>
             </flux:navbar>
 
@@ -86,8 +86,8 @@
                     <flux:navlist.item icon="layout-grid" :href="route('balita')" :current="request()->routeIs('balita')" wire:navigate>
                     {{ __('Balita') }}
                     </flux:navlist.item>
-                    <flux:navlist.item icon="layout-grid" :href="route('data.zscore')" :current="request()->routeIs('data.zscore')" wire:navigate>
-                    {{ __('Data ZScore') }}
+                    <flux:navlist.item icon="layout-grid" :href="route('kriteria')" :current="request()->routeIs('kriteria')" wire:navigate>
+                    {{ __('Kriteria') }}
                     </flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
