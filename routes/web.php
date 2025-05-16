@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BalitaController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -21,6 +22,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth',])->group(function () {
     Route::view('balita', 'pages.balita.balita')->name('balita');
+    Route::get('balita/detail/{id}', [BalitaController::class, 'balitaDetail'])->name('balita.detail');
 
     Route::view('kriteria', 'pages.smart.kriteria')->name('kriteria');
 });

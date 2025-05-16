@@ -9,6 +9,7 @@ use Flux\Flux;
 class Balita extends Component
 {
     public $balita_id, $nama_balita, $jenis_kelamin, $tanggal_lahir, $alamat, $nama_orangtua;
+    public $konfirmasiHapusId;
 
     protected $rules = [
         'nama_balita' => 'required',
@@ -49,38 +50,20 @@ class Balita extends Component
         flash()->success('Data balita ditambahkan!');
     }
 
-    public function editBalita($balita_id)
+    public function confirmHapus($id)
     {
-        $balita = BalitaModel::findOrFail($balita_id);
-
-        $this->balita_id = $balita->balita_id;
-        $this->nama_balita = $balita->nama_balita;
-        $this->jenis_kelamin = $balita->jenis_kelamin;
-        $this->tanggal_lahir = $balita->tanggal_lahir;
-        $this->alamat = $balita->alamat;
-        $this->nama_orangtua = $balita->nama_orangtua;
+        $this->konfirmasiHapusId = $id;
+        Flux::modal('konfirmasi-hapus')->show();
     }
 
-    public function updateBalita()
+    public function hapusBalita()
     {
-        $this->validate();
+        $balita = BalitaModel::findOrFail($this->konfirmasiHapusId)->delete();
+        $this->konfirmasiHapusId = null;
 
-        $balita = BalitaModel::findOrFail($this->balita_id);
-        $balita->update([
-            'nama_balita' => $this->nama_balita,
-            'jenis_kelamin' => $this->jenis_kelamin,
-            'tanggal_lahir' => $this->tanggal_lahir,
-            'alamat' => $this->alamat,
-            'nama_orangtua' => $this->nama_orangtua,
-        ]);
-
-        $this->resetInputField();
-        Flux::modals()->close();
-
-        flash()->success('Data balita diubah!');
+        Flux::modal('konfirmasi-hapus')->close();
+        flash()->success('Data balita Dihapus!');
     }
-
-    //Delete
 
     public function render()
     {
