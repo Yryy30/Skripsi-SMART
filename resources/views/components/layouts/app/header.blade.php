@@ -15,10 +15,10 @@
                 <flux:navbar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Dashboard') }}
                 </flux:navbar.item>
-                <flux:navbar.item icon="layout-grid" :href="route('balita')" :current="request()->routeIs('balita')" wire:navigate>
+                <flux:navbar.item icon="baby" :href="route('balita')" :current="request()->routeIs('balita')" wire:navigate>
                     {{ __('Balita') }}
                 </flux:navbar.item>
-                <flux:navbar.item icon="layout-grid" :href="route('kriteria')" :current="request()->routeIs('kriteria')" wire:navigate>
+                <flux:navbar.item icon="user-cog" :href="route('kriteria')" :current="request()->routeIs('kriteria')" wire:navigate>
                     {{ __('Kriteria') }}
                 </flux:navbar.item>
             </flux:navbar>
@@ -83,10 +83,10 @@
                     <flux:navlist.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Dashboard') }}
                     </flux:navlist.item>
-                    <flux:navlist.item icon="layout-grid" :href="route('balita')" :current="request()->routeIs('balita')" wire:navigate>
+                    <flux:navlist.item icon="baby" :href="route('balita')" :current="request()->routeIs('balita')" wire:navigate>
                     {{ __('Balita') }}
                     </flux:navlist.item>
-                    <flux:navlist.item icon="layout-grid" :href="route('kriteria')" :current="request()->routeIs('kriteria')" wire:navigate>
+                    <flux:navlist.item icon="user-cog" :href="route('kriteria')" :current="request()->routeIs('kriteria')" wire:navigate>
                     {{ __('Kriteria') }}
                     </flux:navlist.item>
                 </flux:navlist.group>
