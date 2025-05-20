@@ -17,4 +17,9 @@ class Balita extends Model
         'alamat',
         'nama_orangtua',
     ];
+
+    public function alternatif()
+    {
+        return $this->hasMany(Alternatif::class, 'balita_id', 'balita_id');
+    }
 }

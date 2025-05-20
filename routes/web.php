@@ -25,6 +25,8 @@ Route::middleware(['auth',])->group(function () {
     Route::get('balita/detail/{id}', [BalitaController::class, 'balitaDetail'])->name('balita.detail');
 
     Route::view('kriteria', 'pages.smart.kriteria')->name('kriteria');
+
+    Route::view('alternatif', 'pages.smart.alternatif')->name('alternatif');
 });
 
 require __DIR__.'/auth.php';

@@ -42,7 +42,7 @@ if (!function_exists('zscore_bb')) {
      * @param array $standarData Data standar TB/U dari Excel
      * @return float|null
      */
-    function zscore_bb_u($umur, $jk, $bb, $standarData)
+    function zscore_bb($umur, $jk, $bb, $standarData)
     {
         $jk = strtoupper($jk);
 
@@ -85,7 +85,22 @@ if (!function_exists('skor_asi')) {
     function skor_asi($asi)
     {
         $asi = strtolower(trim($asi));
-        return $asi === 'ya' ? 5 : 1;
+        if ($asi === 'eksklusif') return 5;
+        if ($asi === 'tidak eksklusif') return 3;
+        return 1;
+    }
+}
+
+if (!function_exists('skor_mpasi')) {
+    /**
+     * Konversi data MPASI ke dalam data baku
+     * @param string $mpasi
+     * @return int|null
+     */
+    function skor_mpasi($mpasi)
+    {
+        $mpasi = strtolower(trim($mpasi));
+        return $mpasi === 'diberikan' ? 5 : 1; // Jika Ya = 5, Jika Tidak = 1
     }
 }
 
@@ -112,7 +127,7 @@ if (!function_exists('utility_smart')) {
     function utility_smart($c_out, $c_min, $c_max)
     {
         if ($c_max == $c_min) {
-            return 1; // atau 0.5 default jika semua nilai sama
+            return 1;
         }
         return round(($c_out - $c_min) / ($c_max - $c_min), 4);
     }
