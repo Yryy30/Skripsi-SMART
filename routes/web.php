@@ -27,6 +27,8 @@ Route::middleware(['auth',])->group(function () {
     Route::view('kriteria', 'pages.smart.kriteria')->name('kriteria');
 
     Route::view('alternatif', 'pages.smart.alternatif')->name('alternatif');
+
+    Route::view('hasil', 'pages.smart.hasil')->name('hasil');
 });
 
 require __DIR__.'/auth.php';
