@@ -5,10 +5,12 @@ namespace App\Livewire\Smart;
 use Livewire\Component;
 use App\Models\Alternatif as AlternatifModel;
 use App\Models\Kriteria as KriteriaModel;
-use Illuminate\Support\Facades\DB;
 
 class Hasil extends Component
 {
+    public $selectedTanggal;
+    public $daftar_tanggal = [];
+
     public $alternatif = [];
     public $data_baku = [];
     public $utility = [];
@@ -16,10 +18,26 @@ class Hasil extends Component
 
     public function mount()
     {
-        $this->alternatif = AlternatifModel::where('tanggal_pengukuran', '2025-05-14')->get();
+        $this->daftar_tanggal = AlternatifModel::select('tanggal_pengukuran')
+            ->distinct()
+            ->pluck('tanggal_pengukuran')
+            ->toArray();
+
+        $this->selectedTanggal = $this->daftar_tanggal[0] ?? null;
+        $this->prosesSmart();
+    }
+
+    public function prosesSmart()
+    {
+        $this->alternatif = AlternatifModel::where('tanggal_pengukuran', $this->selectedTanggal)->get();
         $this->data_baku = $this->getDataBaku();
         $this->utility = $this->getUtility();
         $this->total_smart = $this->getTotalSmart();
+    }
+
+    public function updatedSelectedTanggal()
+    {
+        $this->prosesSmart();
     }
 
     private function getDataBaku()

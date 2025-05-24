@@ -1,15 +1,11 @@
 <div>
-    {{-- <form class="flex">
-        <flux:select wire:model="selectedDate" placeholder="Pilih Tanggal...">
-            @foreach ($tanggal_pengukuran as $tanggal)
-                <flux:select.option value="{{ $tanggal }}">
-                    {{ $tanggal }}
-                </flux:select.option>
-            @endforeach
-        </flux:select>
-        <flux:button type="submit" >Lihat</flux:button>
-    </form> --}}
-
+    <flux:select wire:model.lazy="selectedTanggal" placeholder="Pilih Tanggal...">
+        @foreach ($daftar_tanggal as $tanggal)
+            <flux:select.option value="{{ $tanggal }}">
+                {{ $tanggal }}
+            </flux:select.option>
+        @endforeach
+    </flux:select>
     
     {{-- Tabel Data Alternatif --}}
     <div class="overflow-x-auto mt-5">
