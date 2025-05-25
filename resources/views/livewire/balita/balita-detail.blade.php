@@ -41,14 +41,16 @@
             </tr>
             </thead>
             <tbody>
+                @foreach ($alternatifs as $item)
                 <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
-                    <td class="px-6 py-2 text-gray-600 dark:text-gray-300"> > Diberikan </td>
-                    <td class="px-6 py-2 text-gray-600 dark:text-gray-300"> 5 </td>
-                    <td class="px-6 py-2 text-gray-600 dark:text-gray-300"> 5 </td>
-                    <td class="px-6 py-2 text-gray-600 dark:text-gray-300"> 5 </td>
-                    <td class="px-6 py-2 text-gray-600 dark:text-gray-300"> 5 </td>
-                    <td class="px-6 py-2 text-gray-600 dark:text-gray-300"> 5 </td>
+                    <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $item->tanggal_pengukuran }}</td>
+                    <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $item->tb }}</td>
+                    <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $item->bb }}</td>
+                    <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $item->asi }}</td>
+                    <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $item->mpasi }}</td>
+                    <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $item->sanitasi }}</td>
                 </tr>
+                @endforeach
             </tbody>
         </table>
     </div>

@@ -3,6 +3,7 @@
 namespace App\Livewire\Balita;
 
 use App\Models\Balita as BalitaModel;
+use App\Models\Alternatif as AlternatifModel;
 use Livewire\Component;
 
 class BalitaDetail extends Component
@@ -45,6 +46,9 @@ class BalitaDetail extends Component
 
     public function render()
     {
-        return view('livewire.balita.balita-detail');
+        $alternatifs = AlternatifModel::where('balita_id', $this->balita->balita_id)->get();
+        return view('livewire.balita.balita-detail', [
+            'alternatifs' => $alternatifs,
+        ]);
     }
 }
