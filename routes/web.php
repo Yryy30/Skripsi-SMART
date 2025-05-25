@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BalitaController;
+use App\Http\Controllers\ExportController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -29,6 +30,9 @@ Route::middleware(['auth',])->group(function () {
     Route::view('alternatif', 'pages.smart.alternatif')->name('alternatif');
 
     Route::view('hasil', 'pages.smart.hasil')->name('hasil');
+    
+    Route::get('laporan/{tanggal}', [ExportController::class, 'exportLaporan'])->name('laporan');
+    Route::view('laporan', 'pages.smart.laporan')->name('laporan.view');
 });
 
 require __DIR__.'/auth.php';

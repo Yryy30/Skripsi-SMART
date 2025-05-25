@@ -96,4 +96,27 @@
             </div>
         </form>
     </flux:modal>
+
+    {{-- Modal Hapus Alternatif --}}
+    <flux:modal name="konfirmasi-hapus" class="min-w-[22rem]">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">Hapus data Alternatif?</flux:heading>
+                <flux:text class="mt-2">
+                    <p>Yakin ingin menghapus data ini?</p>
+                    <p>Tindakan tidak dapat dibatalkan.</p>
+                </flux:text>
+            </div>
+            <div class="flex gap-2">
+                <flux:spacer />
+                <flux:modal.close>
+                    <flux:button variant="ghost">Batal</flux:button>
+                </flux:modal.close>
+
+                <form wire:submit.prevent="hapusAlternatif">
+                    <flux:button type="submit" variant="danger">Hapus</flux:button>
+                </form>
+            </div>
+        </div>
+    </flux:modal>
 </div>

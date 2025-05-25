@@ -1,11 +1,20 @@
 <div>
-    <flux:select wire:model.lazy="selectedTanggal" placeholder="Pilih Tanggal...">
-        @foreach ($daftar_tanggal as $tanggal)
-            <flux:select.option value="{{ $tanggal }}">
-                {{ $tanggal }}
-            </flux:select.option>
-        @endforeach
-    </flux:select>
+    <div class="flex items-center gap-2">
+        <flux:select wire:model.lazy="selectedTanggal" placeholder="Pilih Tanggal..." class="flex-1">
+            @foreach ($daftar_tanggal as $tanggal)
+                <flux:select.option value="{{ $tanggal }}">
+                    {{ $tanggal }}
+                </flux:select.option>
+            @endforeach
+        </flux:select>
+        <flux:button 
+            href="{{ route('laporan', ['tanggal' => $selectedTanggal]) }}"
+            icon="arrow-down-tray" 
+            class="whitespace-nowrap"
+        >
+            Export
+        </flux:button>
+    </div>
     
     {{-- Tabel Data Alternatif --}}
     <div class="overflow-x-auto mt-5">

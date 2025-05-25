@@ -15,6 +15,7 @@ class Alternatif extends Component
     public $balita_id = ''; 
     public $tanggal_pengukuran, $tb, $bb, $asi, $mpasi, $sanitasi;
     public $umur_bulan, $tb_zscore, $bb_zscore;
+    public $konfirmasiHapusId;
 
     protected $rules = [
         'balita_id' => 'required',
@@ -98,6 +99,21 @@ class Alternatif extends Component
         $standarData = $data[0];
 
         return zscore_bb($umur_bulan, $jenis_kelamin, $bb, $standarData);
+    }
+
+    public function confirmHapus($id)
+    {
+        $this->konfirmasiHapusId = $id;
+        Flux::modal('konfirmasi-hapus')->show();
+    }
+
+    public function hapusAlternatif()
+    {
+        $balita = AlternatifModel::findOrFail($this->konfirmasiHapusId)->delete();
+        $this->konfirmasiHapusId = null;
+
+        Flux::modal('konfirmasi-hapus')->close();
+        flash()->success('Data Alternatif Dihapus!');
     }
 
     public function render()

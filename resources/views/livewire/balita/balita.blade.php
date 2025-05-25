@@ -38,7 +38,7 @@
     </div>
 
     {{-- Modal Tambah Balita --}}
-    <flux:modal name="tambah-balita" @close="resetInputField" variant="flyout" position="left">
+    <flux:modal name="tambah-balita" @close="resetInputField" class="md:w-1/2">
         <div class="space-y-6">
             <div>
                 <flux:heading size="lg">Tambah Data</flux:heading>
