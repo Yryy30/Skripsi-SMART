@@ -14,6 +14,7 @@ Route::get('dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+/* SETTINGS */
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
@@ -22,11 +23,15 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
 });
 
+/* Hanya Admin */
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::view('kriteria', 'pages.smart.kriteria')->name('kriteria');
+});
+
+/* Admin dan Kader */
 Route::middleware(['auth',])->group(function () {
     Route::view('balita', 'pages.balita.balita')->name('balita');
     Route::get('balita/detail/{id}', [BalitaController::class, 'balitaDetail'])->name('balita.detail');
-
-    Route::view('kriteria', 'pages.smart.kriteria')->name('kriteria');
 
     Route::view('alternatif', 'pages.smart.alternatif')->name('alternatif');
 

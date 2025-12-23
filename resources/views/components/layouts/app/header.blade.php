@@ -18,9 +18,13 @@
                 <flux:navbar.item icon="baby" :href="route('balita')" :current="request()->routeIs('balita')" wire:navigate>
                     {{ __('Balita') }}
                 </flux:navbar.item>
-                <flux:navbar.item icon="user-cog" :href="route('kriteria')" :current="request()->routeIs('kriteria')" wire:navigate>
-                    {{ __('Kriteria') }}
-                </flux:navbar.item>
+                
+                @if(auth()->user()->role == 'admin')
+                    <flux:navbar.item icon="user-cog" :href="route('kriteria')" :current="request()->routeIs('kriteria')" wire:navigate>
+                        {{ __('Kriteria') }}
+                    </flux:navbar.item>
+                @endif
+                
                 <flux:navbar.item icon="stethoscope" :href="route('alternatif')" :current="request()->routeIs('alternatif')" wire:navigate>
                     {{ __('Alternatif') }}
                 </flux:navbar.item>
@@ -92,9 +96,13 @@
                     <flux:navlist.item icon="baby" :href="route('balita')" :current="request()->routeIs('balita')" wire:navigate>
                     {{ __('Balita') }}
                     </flux:navlist.item>
-                    <flux:navlist.item icon="user-cog" :href="route('kriteria')" :current="request()->routeIs('kriteria')" wire:navigate>
-                    {{ __('Kriteria') }}
-                    </flux:navlist.item>
+
+                    @if(auth()->user()->role == 'admin')
+                        <flux:navlist.item icon="user-cog" :href="route('kriteria')" :current="request()->routeIs('kriteria')" wire:navigate>
+                        {{ __('Kriteria') }}
+                        </flux:navlist.item>
+                    @endif
+                    
                     <flux:navlist.item icon="stethoscope" :href="route('alternatif')" :current="request()->routeIs('alternatif')" wire:navigate>
                     {{ __('Alternatif') }}
                     </flux:navlist.item>
