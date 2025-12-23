@@ -16,6 +16,8 @@ class Alternatif extends Component
     public $tanggal_pengukuran, $tb, $bb, $asi, $mpasi, $sanitasi;
     public $umur_bulan, $tb_zscore, $bb_zscore;
     public $konfirmasiHapusId;
+    public $filterTanggal = '';
+    public $listTanggal = [];
 
     protected $rules = [
         'balita_id' => 'required',
@@ -47,6 +49,12 @@ class Alternatif extends Component
     public function mount()
     {
         $this->balitas = BalitaModel::all();
+        
+        $this->listTanggal = AlternatifModel::select('tanggal_pengukuran')
+            ->distinct()
+            ->orderBy('tanggal_pengukuran', 'asc')
+            ->pluck('tanggal_pengukuran')
+            ->toArray();
     }
 
     public function tambahAlternatif()
@@ -118,7 +126,12 @@ class Alternatif extends Component
 
     public function render()
     {
-        $alternatifs = AlternatifModel::all();
+        $alternatifs = AlternatifModel::when($this->filterTanggal, function ($query) {
+                $query->whereDate('tanggal_pengukuran', $this->filterTanggal);
+            })
+            ->orderBy('tanggal_pengukuran', 'asc')
+            ->get();
+
         return view('livewire.smart.alternatif', [
             'alternatifs' => $alternatifs,
         ]);

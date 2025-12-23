@@ -1,7 +1,24 @@
 <div>
-    <flux:modal.trigger name="tambah-alternatif">
-        <flux:button>Tambah Data</flux:button>
-    </flux:modal.trigger>
+    <div class="flex items-center gap-2">
+        <flux:select
+            wire:model.lazy="filterTanggal"
+            placeholder="Pilih Tanggal..."
+            class="flex-1"
+        >
+            <flux:select.option value="">
+                Semua Tanggal
+            </flux:select.option>
+
+            @foreach ($listTanggal as $tgl)
+                <flux:select.option value="{{ $tgl }}">
+                    {{ \Carbon\Carbon::parse($tgl)->format('Y-m-d') }}
+                </flux:select.option>
+            @endforeach
+        </flux:select>
+        <flux:modal.trigger name="tambah-alternatif">
+            <flux:button>Tambah Data</flux:button>
+        </flux:modal.trigger>
+    </div>
 
     {{-- Tabel Data Alternatif --}}
     <div class="overflow-x-auto mt-5">
