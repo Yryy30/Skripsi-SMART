@@ -55,10 +55,10 @@
     </div>
     
     <div class="relative mt-6 w-full">
-        <flux:separator variant="subtle" text="Data Baku" />
+        <flux:separator variant="subtle" text="Data Parameter" />
     </div>
 
-    {{-- Tabel Data Baku --}}
+    {{-- Tabel Data Parameter --}}
     <div class="overflow-x-auto mt-5">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -123,10 +123,10 @@
     </div>
 
     <div class="relative mt-6 w-full">
-        <flux:separator variant="subtle" text="Perangkingan" />
+        <flux:separator variant="subtle" text="Hasil" />
     </div>
 
-    {{-- Tabel Perangkingan --}}
+    {{-- Tabel Hasil --}}
     <div class="overflow-x-auto mt-5">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
