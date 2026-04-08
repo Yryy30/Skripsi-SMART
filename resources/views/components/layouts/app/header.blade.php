@@ -29,7 +29,7 @@
                     {{ __('Alternatif') }}
                 </flux:navbar.item>
                 <flux:navbar.item icon="sigma" :href="route('hasil')" :current="request()->routeIs('hasil')" wire:navigate>
-                    {{ __('Hasil') }}
+                    {{ __('Perhitungan') }}
                 </flux:navbar.item>
             </flux:navbar>
 
@@ -107,7 +107,7 @@
                     {{ __('Alternatif') }}
                     </flux:navlist.item>
                     <flux:navlist.item icon="sigma" :href="route('hasil')" :current="request()->routeIs('hasil')" wire:navigate>
-                    {{ __('Hasil') }}
+                    {{ __('Perhitungan') }}
                     </flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>

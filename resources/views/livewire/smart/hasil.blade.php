@@ -134,6 +134,7 @@
                 <th scope="col" class="px-6 py-3">nama</th>
                 <th scope="col" class="px-6 py-3">Total SMART</th>
                 <th scope="col" class="px-6 py-3">Keterangan</th>
+                <th scope="col" class="px-6 py-3">Intervensi</th>
             </tr>
             </thead>
             <tbody>
@@ -142,6 +143,7 @@
                     <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $item['nama'] }}</td>
                     <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $item['total'] }}</td>
                     <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $item['ket'] }}</td>
+                    <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $item['intervensi'] }}</td>
                 </tr>
                 
                 @endforeach

@@ -55,10 +55,19 @@ class ExportController extends Controller
 
             $kategori = $total <= 0.50 ? 'Tinggi' : ($total <= 0.75 ? 'Menengah' : 'Rendah');
 
+            if ($kategori === 'Tinggi') {
+                $intervensi = 'Rujukan, PMT, monitoring intensif';
+            } elseif ($kategori === 'Menengah') {
+                $intervensi = 'Edukasi, monitoring rutin';
+            } else {
+                $intervensi = 'Edukasi ringan, kontrol berkala';
+            }
+
             return [
                 'nama' => $item['nama'],
                 'total' => $total,
                 'ket' => $kategori,
+                'intervensi' => $intervensi,
             ];
         });
 

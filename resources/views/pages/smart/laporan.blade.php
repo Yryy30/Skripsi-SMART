@@ -61,6 +61,7 @@
         <th>SANITASI</th>
         <th>SKOR SMART</th>
         <th>KETERANGAN</th>
+        <th>INTERVENSI</th>
       </tr>
     </thead>
     <tbody>
@@ -75,6 +76,7 @@
                 <td>{{ $item->sanitasi }}</td>
                 <td>{{ number_format($total_smart[$index]['total'], 4) }}</td>
                 <td>{{ $total_smart[$index]['ket'] }}</td>
+                <td>{{ $total_smart[$index]['intervensi'] }}</td>
             </tr>
         @endforeach
     </tbody>

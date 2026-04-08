@@ -194,6 +194,12 @@
                     <flux:input wire:model.defer="kriterias.{{ $index }}.kriteria_bobot" label="{{ $kriteria['kriteria_nama'] }}" />                    
                 @endforeach
                 <div class="flex">
+                    @php
+                        $currentTotal = array_sum(array_column($kriterias, 'kriteria_bobot'));
+                    @endphp
+                    <div class="mb-2 p-2 {{ $currentTotal == 100 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }} rounded-lg">
+                        Total Bobot Maksimal harus 100
+                    </div>
                     <flux:spacer />
                     <flux:button type="submit" variant="primary">Simpan</flux:button>
                 </div>

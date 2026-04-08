@@ -17,6 +17,12 @@ class Kriteria extends Component
 
     public function updateBobot()
     {
+        $totalInput = array_sum(array_column($this->kriterias, 'kriteria_bobot'));
+        if ($totalInput != 100){
+            flash()->error('Total bobot harus 100%!');
+            return;
+        }
+
         foreach ($this->kriterias as $kriteria) {
             ModelsKriteria::where('kriteria_id', $kriteria['kriteria_id'])
                 ->update([

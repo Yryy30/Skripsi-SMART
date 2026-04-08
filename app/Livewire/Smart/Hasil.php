@@ -125,10 +125,19 @@ class Hasil extends Component
                 $kategori = 'Rendah'; // sehat, risiko rendah
             }
 
+            if ($kategori === 'Tinggi') {
+                $intervensi = 'Rujukan, PMT, monitoring intensif';
+            } elseif ($kategori === 'Menengah') {
+                $intervensi = 'Edukasi, monitoring rutin';
+            } else {
+                $intervensi = 'Edukasi ringan, kontrol berkala';
+            }
+
             $total_smart[] = [
                 'nama' => $item['nama'],
                 'total' => $total,
                 'ket' => $kategori,
+                'intervensi' => $intervensi,
             ];
         }
 
