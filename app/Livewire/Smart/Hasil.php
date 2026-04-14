@@ -16,6 +16,8 @@ class Hasil extends Component
     public $utility = [];
     public $total_smart = [];
 
+    public $detail_alternatif = [];
+
     public function mount()
     {
         $this->daftar_tanggal = AlternatifModel::select('tanggal_pengukuran')
@@ -144,6 +146,31 @@ class Hasil extends Component
         return $total_smart;
     }
 
+    public function resetDataDetail()
+    {
+        $this->detail_alternatif = [];
+    }
+
+    public function showDetail($nama)
+    {
+        $this->detail_alternatif = [];
+
+        $alternatif = collect($this->alternatif)->first(function ($item) use ($nama) {
+            return $item->balita->nama_balita === $nama;
+        });
+
+        $dataBaku = collect($this->data_baku)->firstWhere('nama', $nama);
+        $utility = collect($this->utility)->firstWhere('nama', $nama);
+        $total = collect($this->total_smart)->firstWhere('nama', $nama);
+
+        $this->detail_alternatif = [
+            'alternatif' => $alternatif,
+            'data_baku' => $dataBaku,
+            'utility' => $utility,
+            'total' => $total,
+        ];
+
+    }
 
     public function render()
     {

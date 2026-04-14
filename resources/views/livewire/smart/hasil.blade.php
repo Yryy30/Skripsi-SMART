@@ -140,7 +140,16 @@
             <tbody>
                 @foreach ($total_smart as $item)
                 <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
-                    <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $item['nama'] }}</td>
+                    <td class="px-6 py-2 text-gray-600 dark:text-gray-300">
+                        <flux:modal.trigger name="hasil-alternatif">
+                            <span 
+                                class="text-blue-600 cursor-pointer hover:underline"
+                                wire:click.prevent="showDetail('{{ $item['nama'] }}')"
+                            >
+                                {{ $item['nama'] }}
+                            </span>
+                        </flux:modal.trigger>
+                    </td>
                     <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $item['total'] }}</td>
                     <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $item['ket'] }}</td>
                     <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $item['intervensi'] }}</td>
@@ -151,5 +160,51 @@
             
         </table>
     </div>
+
+    {{-- Modal Hasil per alternatif --}}
+    <flux:modal name="hasil-alternatif" @close="$wire.resetDataDetail()" class="md:w-1/2">
+        @if(!empty($detail_alternatif))
+            <div class="space-y-3">
+                <h2 class="text-lg font-bold">Detail Hasil Balita</h2>
+                <flux:button 
+                    href="{{ route('laporan.detail', ['id' => $detail_alternatif['alternatif']->alternatif_id]) }}"
+                    target="_blank"
+                    icon="printer"
+                >
+                    Cetak
+                </flux:button>
+
+                {{-- DATA ALTERNATIF --}}
+                <div class="border-b pb-2">
+                    <div><strong>Nama:</strong> {{ $detail_alternatif['alternatif']->balita->nama_balita }}</div>
+                    <div><strong>Tanggal:</strong> {{ $detail_alternatif['alternatif']->tanggal_pengukuran }}</div>
+                    <div><strong>Umur:</strong> {{ $detail_alternatif['alternatif']->umur_bulan }} bulan</div>
+
+                    <div><strong>TB:</strong> {{ $detail_alternatif['alternatif']->tb }}</div>
+                    <div><strong>Z-Score TB/U:</strong> {{ $detail_alternatif['alternatif']->tb_zscore }}</div>
+
+                    <div><strong>BB:</strong> {{ $detail_alternatif['alternatif']->bb }}</div>
+                    <div><strong>Z-Score BB/U:</strong> {{ $detail_alternatif['alternatif']->bb_zscore }}</div>
+
+                    <div><strong>ASI:</strong> {{ $detail_alternatif['alternatif']->asi }}</div>
+                    <div><strong>MPASI:</strong> {{ $detail_alternatif['alternatif']->mpasi }}</div>
+                    <div><strong>Sanitasi:</strong> {{ $detail_alternatif['alternatif']->sanitasi }}</div>
+                </div>
+
+                {{-- HASIL SMART --}}
+                <div>
+                    <h3 class="font-semibold">Hasil Perhitungan</h3>
+
+                    <div><strong>Total SMART:</strong> {{ $detail_alternatif['total']['total'] ?? '-' }}</div>
+                    <div><strong>Kategori:</strong> {{ $detail_alternatif['total']['ket'] ?? '-' }}</div>
+                    <div><strong>Intervensi:</strong> {{ $detail_alternatif['total']['intervensi'] ?? '-' }}</div>
+                </div>
+            </div>
+        @else
+            <div class="text-center py-10">
+                <p class="text-gray-500">Memuat data...</p>
+            </div>
+        @endif
+    </flux:modal>
 
 </div>

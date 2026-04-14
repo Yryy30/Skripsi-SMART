@@ -39,6 +39,7 @@ Route::middleware(['auth',])->group(function () {
     
     Route::get('laporan/{tanggal}', [ExportController::class, 'exportLaporan'])->name('laporan');
     Route::view('laporan', 'pages.smart.laporan')->name('laporan.view');
+    Route::get('laporan/detail/{id}', [ExportController::class, 'exportDetail'])->name('laporan.detail');
 });
 
 require __DIR__.'/auth.php';
