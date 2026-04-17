@@ -1,13 +1,21 @@
 <div>
     <div class="grid gap-4 md:grid-cols-4">
-            <!-- 1/4 Bagian -->
+            <!-- Pie Chart - Jenis Kelamin -->
             <div class="col-span-4 md:col-span-1 h-[250px] relative overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <div id="genderChart" wire:ignore></div>
+                @if($hasGenderData)
+                    <div id="genderChart" wire:ignore></div>
+                @else
+                    <x-empty-state icon="users" message="Belum ada data balita" />
+                @endif
             </div>
 
-            <!-- 3/4 Bagian -->
+            <!-- Line Chart - Stunting -->
             <div class="col-span-4 md:col-span-3 relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <div id="stuntingChart" wire:ignore></div>
+                @if($hasStuntingData)
+                    <div id="stuntingChart" wire:ignore></div>
+                @else
+                    <x-empty-state icon="chart-line" message="Belum ada data pengukuran" />
+                @endif
             </div>
         </div>
 
@@ -63,6 +71,9 @@
             const commonOptions = getCommonOptions();
             const theme = getChartTheme();
 
+            const genderEl   = document.querySelector("#genderChart");
+            const stuntingEl = document.querySelector("#stuntingChart");
+
             // Pie Chart - Jenis Kelamin
             const genderOptions = {
                 series: @json($genderData),
@@ -115,8 +126,10 @@
                 }
             };
 
-            genderChart = new ApexCharts(document.querySelector("#genderChart"), genderOptions);
-            genderChart.render();
+            if (genderEl) {
+                genderChart = new ApexCharts(genderEl, genderOptions);
+                genderChart.render();
+            }
 
             // Line Chart - Resiko Stunting Tinggi
             const maxValue = Math.max(...@json($stuntingData));
@@ -192,8 +205,10 @@
                 }
             };
 
-            stuntingChart = new ApexCharts(document.querySelector("#stuntingChart"), stuntingOptions);
-            stuntingChart.render();
+            if (stuntingEl) {
+                stuntingChart = new ApexCharts(stuntingEl, stuntingOptions);
+                stuntingChart.render();
+            }
         }
 
         // Initialize charts on component load

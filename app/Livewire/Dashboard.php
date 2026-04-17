@@ -6,13 +6,16 @@ use Livewire\Component;
 use App\Models\Balita;
 use App\Models\Alternatif;
 use App\Models\Kriteria;
+use Carbon\Carbon;
 
 class Dashboard extends Component
 {
-    public $genderLabels = [];
-    public $genderData = [];
-    public $stuntingLabels = [];
-    public $stuntingData = [];
+    public $genderLabels    = [];
+    public $genderData      = [];
+    public $stuntingLabels  = [];
+    public $stuntingData    = [];
+    public $hasGenderData   = false;
+    public $hasStuntingData = false;
 
     public function mount()
     {
@@ -21,39 +24,52 @@ class Dashboard extends Component
 
     public function loadData()
     {
-        // Data Jenis Kelamin
-        $jumLk = Balita::where('jenis_kelamin', 'L')->count();
-        $jumPr = Balita::where('jenis_kelamin', 'P')->count();
+        $this->loadGenderData();
+        $this->loadStuntingData();
+    }
 
-        $this->genderLabels = ['Laki-laki', 'Perempuan'];
-        $this->genderData = [$jumLk, $jumPr];
+    private function loadGenderData()
+    {
+        $gender = Balita::selectRaw('jenis_kelamin, COUNT(*) as total')
+            ->groupBy('jenis_kelamin')
+            ->pluck('total', 'jenis_kelamin');
 
-        // Grafik Resiko Stunting Tinggi
+        $this->genderLabels   = ['Laki-laki', 'Perempuan'];
+        $this->genderData     = [$gender['L'] ?? 0, $gender['P'] ?? 0];
+        $this->hasGenderData  = array_sum($this->genderData) > 0;
+    }
+
+    private function loadStuntingData()
+    {
         $bobot = Kriteria::pluck('kriteria_bobot_normalisasi', 'kriteria_nama')->toArray();
-        $tanggalList = Alternatif::select('tanggal_pengukuran')
-            ->distinct()
-            ->pluck('tanggal_pengukuran');
 
-        $chartData = $tanggalList->map(function ($tanggal) use ($bobot) {
-            $alternatif = Alternatif::with('balita')
-                ->where('tanggal_pengukuran', $tanggal)
-                ->get();
+        $semuaAlternatif = Alternatif::with('balita')
+            ->orderBy('tanggal_pengukuran')
+            ->get()
+            ->groupBy('tanggal_pengukuran');
 
-            $smart = hitungSmart($alternatif, $bobot);
+        if ($semuaAlternatif->isEmpty()) {
+            $this->hasStuntingData = false;
+            $this->stuntingLabels  = [];
+            $this->stuntingData    = [];
+            return;
+        }
+
+        $chartData = $semuaAlternatif->map(function ($alternatif, $tanggal) use ($bobot) {
+            $smart        = hitungSmart($alternatif, $bobot);
             $jumlahTinggi = collect($smart['total_smart'])->where('ket', 'Tinggi')->count();
 
             return [
-                'tanggal' => $tanggal,
+                'tanggal'       => $tanggal,
                 'jumlah_tinggi' => $jumlahTinggi,
             ];
-        })->sortBy('tanggal')->values();
+        })->values();
 
-        // Persiapkan data untuk Line Chart
-        $this->stuntingLabels = $chartData->pluck('tanggal')->map(function($date) {
-            return \Carbon\Carbon::parse($date)->format('d M Y');
-        })->toArray();
-        
-        $this->stuntingData = $chartData->pluck('jumlah_tinggi')->toArray();
+        $this->stuntingLabels  = $chartData->pluck('tanggal')
+            ->map(fn($date) => Carbon::parse($date)->translatedFormat('d M Y'))
+            ->toArray();
+        $this->stuntingData    = $chartData->pluck('jumlah_tinggi')->toArray();
+        $this->hasStuntingData = true;
     }
 
     public function render()
