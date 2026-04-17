@@ -7,7 +7,7 @@ use Livewire\Component;
 use App\Models\Balita as BalitaModel;
 use App\Models\Alternatif as AlternatifModel;
 use Flux\Flux;
-use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
 
 class Alternatif extends Component
 {
@@ -93,20 +93,30 @@ class Alternatif extends Component
 
     public function hitungTb($umur_bulan, $jenis_kelamin, $tb)
     {
-        $filepath = public_path('lhfa_0-to-5-years_zscores.xlsx');
-        $data = Excel::toArray(new ZscoreStandarImport, $filepath);
-        $standarData = $data[0];
+        $standarData = DB::table('lhfa')
+            ->where('month', (int)$umur_bulan)
+            ->where('gender', strtoupper($jenis_kelamin))
+            ->first();
+        
+        if (!$standarData) {
+            return null; 
+        }
 
-        return zscore_tb($umur_bulan, $jenis_kelamin, $tb, $standarData);
+        return zscore_tb($tb, $standarData);
     }
 
     public function hitungBb($umur_bulan, $jenis_kelamin, $bb)
     {
-        $filepath = public_path('wfa_0-to-5-years_zscores.xlsx');
-        $data = Excel::toArray(new ZscoreStandarImport, $filepath);
-        $standarData = $data[0];
+        $standarData = DB::table('wfa')
+            ->where('month', (int)$umur_bulan)
+            ->where('gender', strtoupper($jenis_kelamin))
+            ->first();
+        
+        if (!$standarData) {
+            return null; 
+        }
 
-        return zscore_bb($umur_bulan, $jenis_kelamin, $bb, $standarData);
+        return zscore_bb($bb, $standarData);
     }
 
     public function confirmHapus($id)
