@@ -4,29 +4,20 @@ if (!function_exists('zscore_tb')) {
     /**
      * Hitung Z-Score tinggi badan per umur (TB/U)
      *
-     * @param int $umur Umur dalam bulan
-     * @param string $jk Jenis kelamin (L/P)
      * @param float $tb Tinggi badan anak
-     * @param array $standarData Data standar TB/U dari Excel
+     * @param object|array $data Row data dari database (hasil query)
      * @return float|null Nilai Z-Score atau null jika tidak ditemukan
      */
-    function zscore_tb($umur, $jk, $tb, $standarData)
+    function zscore_tb($tb, $standarData)
     {
-        // Normalisasi jenis kelamin
-        $jk = strtoupper($jk);
+        $data = (object) $standarData;
 
-        // Cari data standar berdasarkan umur dan gender
-        $data = collect($standarData)->first(function ($item) use ($umur, $jk) {
-            return (int)$item['month'] === (int)$umur && strtoupper($item['gender']) === $jk;
-        });
-
-        if (!$data || !isset($data['mean']) || !isset($data['sd'])) {
-            return null; // Data tidak ditemukan atau tidak lengkap
+        if (!isset($data->mean) || !isset($data->sd)) {
+            return null; 
         }
 
-        // Rumus Z-Score: (X - Mean) / SD
-        $mean = (float) $data['mean'];
-        $sd = (float) $data['sd'];
+        $mean = (float) $data->mean;
+        $sd = (float) $data->sd;
 
         return round(($tb - $mean) / $sd, 2);
     }
@@ -36,26 +27,20 @@ if (!function_exists('zscore_bb')) {
     /**
      * Hitung Z-Score Berat Badan per Umur (BB/U)
      *
-     * @param int $umur Umur dalam bulan
-     * @param string $jk Jenis kelamin (L/P)
      * @param float $bb Berat badan anak
-     * @param array $standarData Data standar TB/U dari Excel
-     * @return float|null
+     * @param object|array $data Row data dari database (hasil query)
+     * @return float|null Nilai Z-Score atau null jika tidak ditemukan
      */
-    function zscore_bb($umur, $jk, $bb, $standarData)
+    function zscore_bb($bb, $standarData)
     {
-        $jk = strtoupper($jk);
+        $data = (object) $standarData;
 
-        $data = collect($standarData)->first(function ($item) use ($umur, $jk) {
-            return (int)$item['month'] === (int)$umur && strtoupper($item['gender']) === $jk;
-        });
-
-        if (!$data || !isset($data['mean']) || !isset($data['sd'])) {
-            return null;
+        if (!isset($data->mean) || !isset($data->sd)) {
+            return null; 
         }
 
-        $mean = (float) $data['mean'];
-        $sd = (float) $data['sd'];
+        $mean = (float) $data->mean;
+        $sd = (float) $data->sd;
 
         return round(($bb - $mean) / $sd, 2);
     }
@@ -119,16 +104,40 @@ if (!function_exists('skor_sanitasi')) {
     }
 }
 
+if (!function_exists('skor_penyakit')) {
+    /**
+     * Konversi data Riwayat Penyakit Infeksi ke dalam data baku
+     * @param string $riwayat_penyakit
+     * @return int|null
+     */
+    function skor_penyakit($riwayat_penyakit)
+    {
+        $riwayat_penyakit = strtolower(trim($riwayat_penyakit));
+        if ($riwayat_penyakit === 'sering') return 5;
+        if ($riwayat_penyakit === 'jarang') return 3;
+        return 1;
+    }
+}
+
 if (!function_exists('utility_smart')) {
     /**
      * Hitung utility SMART
-     * @param int $c_out 
+     * @param float $c_out Nilai alternatif
+     * @param float $c_min Nilai minimum dari semua alternatif
+     * @param float $c_max Nilai maksimum dari semua alternatif
+     * @param string $type 'benefit' | 'cost'
      */
-    function utility_smart($c_out, $c_min, $c_max)
+    function utility_smart($c_out, $c_min, $c_max, string $type = 'benefit')
     {
         if ($c_max == $c_min) {
             return 1;
         }
+
+        if ($type === 'cost') {
+            return round(($c_max - $c_out) / ($c_max - $c_min), 4);
+        }
+
+        // benefit (default)
         return round(($c_out - $c_min) / ($c_max - $c_min), 4);
     }
 }
