@@ -21,6 +21,7 @@ class Alternatif extends Model
         'asi',
         'mpasi',
         'sanitasi',
+        'penyakit',
     ];
 
     public function balita()

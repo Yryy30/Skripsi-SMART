@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Smart;
 
-use App\Imports\ZscoreStandarImport;
 use Livewire\Component;
 use App\Models\Balita as BalitaModel;
 use App\Models\Alternatif as AlternatifModel;
@@ -13,7 +12,7 @@ class Alternatif extends Component
 {
     public $balitas;
     public $balita_id = ''; 
-    public $tanggal_pengukuran, $tb, $bb, $asi, $mpasi, $sanitasi;
+    public $tanggal_pengukuran, $tb, $bb, $asi, $mpasi, $sanitasi, $penyakit;
     public $umur_bulan, $tb_zscore, $bb_zscore;
     public $konfirmasiHapusId;
     public $filterTanggal = '';
@@ -27,6 +26,7 @@ class Alternatif extends Component
         'asi' => 'required',
         'mpasi' => 'required',
         'sanitasi' => 'required',
+        'penyakit' => 'required',
     ];
 
     public function resetInputField()
@@ -39,6 +39,7 @@ class Alternatif extends Component
             'asi',
             'mpasi',
             'sanitasi',
+            'penyakit',
             'umur_bulan',
             'tb_zscore',
             'bb_zscore',
@@ -83,12 +84,13 @@ class Alternatif extends Component
             'asi' => $this->asi,
             'mpasi' => $this->mpasi,
             'sanitasi' => $this->sanitasi,
+            'penyakit' => $this->penyakit,
         ]);
 
         $this->resetInputField();
         Flux::modal('tambah-alternatif')->close();
 
-        flash()->success('Data Alternatif ditambahkan!');
+        $this->dispatch('saved');
     }
 
     public function hitungTb($umur_bulan, $jenis_kelamin, $tb)

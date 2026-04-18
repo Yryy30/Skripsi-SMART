@@ -1,61 +1,106 @@
 <div>
-    <div class="flex items-center gap-2">
-        <flux:select
-            wire:model.lazy="filterTanggal"
-            placeholder="Pilih Tanggal..."
-            class="flex-1"
-        >
-            <flux:select.option value="">
-                Semua Tanggal
-            </flux:select.option>
+    <div class="flex items-center justify-between mb-4">
+        {{-- KIRI --}}
+        <div class="flex items-center gap-3 w-1/2">
+            <div class="flex-1">
+                <flux:select
+                    wire:model.live="filterTanggal"
+                    placeholder="Pilih Tanggal..."
+                >
+                    <flux:select.option value="">
+                        Semua Tanggal
+                    </flux:select.option>
 
-            @foreach ($listTanggal as $tgl)
-                <flux:select.option value="{{ $tgl }}">
-                    {{ \Carbon\Carbon::parse($tgl)->format('Y-m-d') }}
-                </flux:select.option>
-            @endforeach
-        </flux:select>
-        <flux:modal.trigger name="tambah-alternatif">
-            <flux:button>Tambah Data</flux:button>
-        </flux:modal.trigger>
+                    @foreach ($listTanggal as $tgl)
+                        <flux:select.option value="{{ $tgl }}">
+                            {{ \Carbon\Carbon::parse($tgl)->format('d M Y') }}
+                        </flux:select.option>
+                    @endforeach
+                </flux:select>
+            </div>
+
+            <flux:modal.trigger name="tambah-alternatif">
+                <flux:button>Tambah Data</flux:button>
+            </flux:modal.trigger>
+        </div>
+        {{-- KANAN --}}
+        <div class="flex items-center gap-2">
+            <x-action-message on="saved" class="text-green-600 text-sm">
+                ✔ Data berhasil disimpan
+            </x-action-message>
+        </div>
+        <div class="flex items-center gap-2">
+            <x-action-message on="deleted" class="text-green-600 text-sm">
+                ✔ Data berhasil dihapus
+            </x-action-message>
+        </div>
     </div>
 
     {{-- Tabel Data Alternatif --}}
-    <div class="overflow-x-auto mt-5">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-                <th scope="col" class="px-6 py-3">tgl pengukuran</th>
-                <th scope="col" class="px-6 py-3">nama</th>
-                <th scope="col" class="px-6 py-3">umur(bulan)</th>
-                <th scope="col" class="px-6 py-3">tb/u</th>
-                <th scope="col" class="px-6 py-3">bb/u</th>
-                <th scope="col" class="px-6 py-3">asi</th>
-                <th scope="col" class="px-6 py-3">mpasi</th>
-                <th scope="col" class="px-6 py-3">sanitasi</th>
-                <th scope="col" class="px-6 py-3">actions</th>
-            </tr>
+    <div class="overflow-x-auto mt-5 border rounded-lg">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+
+            {{-- HEAD --}}
+            <thead class="text-xs uppercase bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-400">
+                <tr>
+                    <th class="px-6 py-3">Tanggal</th>
+                    <th class="px-6 py-3">Nama</th>
+                    <th class="px-6 py-3">Umur (bln)</th>
+                    <th class="px-6 py-3">TB/U</th>
+                    <th class="px-6 py-3">BB/U</th>
+                    <th class="px-6 py-3">ASI</th>
+                    <th class="px-6 py-3">MP-ASI</th>
+                    <th class="px-6 py-3">Sanitasi</th>
+                    <th class="px-6 py-3">R. Penyakit Infeksi <p>(3bln terakhir)</p></th>
+                    <th class="px-6 py-3 text-center">Aksi</th>
+                </tr>
             </thead>
+
+            {{-- BODY --}}
             <tbody>
-            @foreach ($alternatifs as $alternatif)
-            <tr wire:key="alternatif-{{ $alternatif->alternatif_id }}" class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
-                <td class="px-6 py-2 text-gray-900 dark:text-white">{{ $alternatif->tanggal_pengukuran }}</td>
-                <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $alternatif->balita->nama_balita }}</td>
-                <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $alternatif->umur_bulan }}</td>
-                <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $alternatif->tb }}</td>
-                <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $alternatif->bb }}</td>
-                <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $alternatif->asi }}</td>
-                <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $alternatif->mpasi }}</td>
-                <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $alternatif->sanitasi }}</td>
-                <td class="px-6 py-2">
-                    {{-- <a href="{{ route('balita.detail', $balita->balita_id) }}">
-                        <flux:button size="sm">Detail</flux:button>
-                    </a> --}}
-                    <flux:button wire:click="confirmHapus({{ $alternatif->alternatif_id }})" size="sm" variant="danger">Hapus</flux:button>
-                </td>
-            </tr>
-            
-            @endforeach
+                @forelse ($alternatifs as $alternatif)
+                    <tr wire:key="alternatif-{{ $alternatif->alternatif_id }}"
+                        class="border-b dark:border-gray-700 odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800">
+
+                        <td class="px-6 py-3 font-medium text-gray-900 dark:text-white">
+                            {{ \Carbon\Carbon::parse($alternatif->tanggal_pengukuran)->format('d M Y') }}
+                        </td>
+
+                        <td class="px-6 py-3">
+                            {{ $alternatif->balita->nama_balita }}
+                        </td>
+
+                        <td class="px-6 py-3">
+                            {{ $alternatif->umur_bulan }}
+                        </td>
+
+                        <td class="px-6 py-3">{{ $alternatif->tb }}</td>
+                        <td class="px-6 py-3">{{ $alternatif->bb }}</td>
+
+                        <td class="px-6 py-3">{{ $alternatif->asi }}</td>
+                        <td class="px-6 py-3">{{ $alternatif->mpasi }}</td>
+                        <td class="px-6 py-3">{{ $alternatif->sanitasi }}</td>
+                        <td class="px-6 py-3">
+                            {{ $alternatif->penyakit > 0 ? $alternatif->penyakit . ' kali' : 'Tidak Pernah' }}
+                        </td>
+
+                        <td class="px-6 py-3 text-center">
+                            <flux:button 
+                                wire:click="confirmHapus({{ $alternatif->alternatif_id }})" 
+                                size="sm" 
+                                variant="danger">
+                                Hapus
+                            </flux:button>
+                        </td>
+                    </tr>
+
+                @empty
+                    <tr>
+                        <td colspan="10" class="py-10">
+                            <x-empty-state message="Belum ada data alternatif" />
+                        </td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
@@ -83,28 +128,31 @@
                     </flux:select>
                 </div>
 
-                <flux:input wire:model="tb" label="TB/U" placeholder="e.g., 90.3" />
-                <flux:input wire:model="bb" label="BB/U" placeholder="e.g., 30.5" />
+                <flux:input wire:model="tb" label="Tinggi Badan/Umur" placeholder="e.g., 90.3" />
+                <flux:input wire:model="bb" label="Berat Badan/Umur" placeholder="e.g., 30.5" />
                 
                 <div class="md:col-span-2">
-                    <flux:radio.group wire:model="asi" label="ASI" variant="segmented">
+                    <flux:radio.group wire:model="asi" label="Asi Eksklusif" variant="segmented">
                         <flux:radio value="Eksklusif" label="Eksklusif" />
                         <flux:radio value="Tidak Eksklusif" label="Tidak Eksklusif" />
                         <flux:radio value="Tidak Diberikan" label="Tidak Diberikan" />
                     </flux:radio.group>
                 </div>
                 <div class="md:col-span-2">
-                    <flux:radio.group wire:model="mpasi" label="MP-ASI" variant="segmented">
+                    <flux:radio.group wire:model="mpasi" label="Makanan Pendamping Asi" variant="segmented">
                         <flux:radio value="Diberikan" label="Diberikan" />
                         <flux:radio value="Tidak Diberikan" label="Tidak Diberikan" />
                     </flux:radio.group>
                 </div>                
                 <div class="md:col-span-2">
-                    <flux:radio.group wire:model="sanitasi" label="SANITASI" variant="segmented">
+                    <flux:radio.group wire:model="sanitasi" label="Sanitasi" variant="segmented">
                         <flux:radio value="Layak" label="Layak" />
                         <flux:radio value="Sebagian Layak" label="Sebagian Layak" />
                         <flux:radio value="Tidak Layak" label="Tidak Layak" />
                     </flux:radio.group>
+                </div>
+                <div class="md:col-span-2">
+                    <flux:input wire:model="penyakit" label="Riwayat Penyakit Infeksi (3bln terakhir)" placeholder="e.g., 2" />
                 </div>
             </div>
             <div class="flex">

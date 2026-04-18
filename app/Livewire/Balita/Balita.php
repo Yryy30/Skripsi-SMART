@@ -47,7 +47,7 @@ class Balita extends Component
         $this->resetInputField();
         Flux::modal('tambah-balita')->close();
 
-        flash()->success('Data balita ditambahkan!');
+        $this->dispatch('saved');
     }
 
     public function confirmHapus($id)
@@ -62,7 +62,7 @@ class Balita extends Component
         $this->konfirmasiHapusId = null;
 
         Flux::modal('konfirmasi-hapus')->close();
-        flash()->success('Data balita Dihapus!');
+        $this->dispatch('deleted');
     }
 
     public function render()
