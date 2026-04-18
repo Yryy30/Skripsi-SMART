@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <title>Laporan Deteksi Stunting</title>
@@ -9,26 +10,36 @@
       font-size: 11px;
       margin: 20px;
     }
-    h1, h2 {
+
+    h1,
+    h2 {
       text-align: center;
       margin: 0;
       font-size: 16px;
     }
+
     .info {
       margin: 10px 0;
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
       font-size: 10px;
     }
-    table, th, td {
+
+    table,
+    th,
+    td {
       border: 1px solid black;
     }
-    th, td {
+
+    th,
+    td {
       padding: 4px;
       text-align: center;
     }
+
     .logo {
       position: absolute;
       top: 10px;
@@ -36,6 +47,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <img src="{{ public_path('posyandu.png') }}" alt="Logo Posyandu" class="logo" width="50">
@@ -59,28 +71,42 @@
         <th>ASI</th>
         <th>MP-ASI</th>
         <th>SANITASI</th>
+        <th>R. Penyakit</th>
         <th>SKOR SMART</th>
         <th>KETERANGAN</th>
         <th>INTERVENSI</th>
       </tr>
     </thead>
     <tbody>
-        @foreach ($alternatif as $index => $item)
-            <tr>
-                <td>{{ $index + 1 }}</td>
-                <td>{{ $total_smart[$index]['nama'] }}</td>
-                <td>{{ $item->tb }}</td>
-                <td>{{ $item->bb }}</td>
-                <td>{{ $item->asi }}</td>
-                <td>{{ $item->mpasi }}</td>
-                <td>{{ $item->sanitasi }}</td>
-                <td>{{ number_format($total_smart[$index]['total'], 4) }}</td>
-                <td>{{ $total_smart[$index]['ket'] }}</td>
-                <td>{{ $total_smart[$index]['intervensi'] }}</td>
-            </tr>
-        @endforeach
+      @foreach ($alternatif as $index => $item)
+      <tr>
+        <td>{{ $index + 1 }}</td>
+        <td>{{ $total_smart[$index]['nama'] }}</td>
+        <td>{{ $item->tb }}</td>
+        <td>{{ $item->bb }}</td>
+        <td>{{ $item->asi }}</td>
+        <td>{{ $item->mpasi }}</td>
+        <td>{{ $item->sanitasi }}</td>
+        <td>{{ $item->penyakit > 0 ? $item->penyakit . ' kali' : 'Tidak Pernah' }}</td>
+        <td>{{ number_format($total_smart[$index]['total'], 4) }}</td>
+        <td>{{ $total_smart[$index]['ket'] }}</td>
+        <td>{{ $total_smart[$index]['intervensi'] }}</td>
+      </tr>
+      @endforeach
+
     </tbody>
   </table>
 
+  <div style="width: 100%; margin-top: 40px;">
+    <div style="width: 250px; float: right; text-align: center;">
+      <p>Depok, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+      <p>Mengetahui,</p>
+
+      <br><br><br>
+
+      <p><strong>Ketua Kader</strong></p>
+    </div>
+  </div>
 </body>
+
 </html>

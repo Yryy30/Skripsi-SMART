@@ -19,7 +19,7 @@ class Kriteria extends Component
     {
         $totalInput = array_sum(array_column($this->kriterias, 'kriteria_bobot'));
         if ($totalInput != 100){
-            flash()->error('Total bobot harus 100%!');
+            $this->dispatch('error');
             return;
         }
 
@@ -34,7 +34,7 @@ class Kriteria extends Component
         $this->kriterias = ModelsKriteria::all()->toArray();
 
         Flux::modals()->close();
-        flash()->success('Bobot berhasil diubah!');
+        $this->dispatch('saved');
     }
 
     protected function normalisasiBobot()

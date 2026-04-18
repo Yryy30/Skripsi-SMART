@@ -23,6 +23,7 @@ return new class extends Migration
             $table->enum('asi', ['Eksklusif', 'Tidak Eksklusif', 'Tidak Diberikan']);
             $table->enum('mpasi', ['Diberikan', 'Tidak Diberikan']);
             $table->enum('sanitasi', ['Layak', 'Sebagian Layak', 'Tidak Layak']);
+            $table->integer('penyakit');
             $table->timestamps();
         });
     }

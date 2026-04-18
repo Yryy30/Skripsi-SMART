@@ -2,18 +2,17 @@
 
 namespace App\Livewire\Smart;
 
-use App\Imports\ZscoreStandarImport;
 use Livewire\Component;
 use App\Models\Balita as BalitaModel;
 use App\Models\Alternatif as AlternatifModel;
 use Flux\Flux;
-use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
 
 class Alternatif extends Component
 {
     public $balitas;
     public $balita_id = ''; 
-    public $tanggal_pengukuran, $tb, $bb, $asi, $mpasi, $sanitasi;
+    public $tanggal_pengukuran, $tb, $bb, $asi, $mpasi, $sanitasi, $penyakit;
     public $umur_bulan, $tb_zscore, $bb_zscore;
     public $konfirmasiHapusId;
     public $filterTanggal = '';
@@ -27,6 +26,7 @@ class Alternatif extends Component
         'asi' => 'required',
         'mpasi' => 'required',
         'sanitasi' => 'required',
+        'penyakit' => 'required',
     ];
 
     public function resetInputField()
@@ -39,6 +39,7 @@ class Alternatif extends Component
             'asi',
             'mpasi',
             'sanitasi',
+            'penyakit',
             'umur_bulan',
             'tb_zscore',
             'bb_zscore',
@@ -83,30 +84,41 @@ class Alternatif extends Component
             'asi' => $this->asi,
             'mpasi' => $this->mpasi,
             'sanitasi' => $this->sanitasi,
+            'penyakit' => $this->penyakit,
         ]);
 
         $this->resetInputField();
         Flux::modal('tambah-alternatif')->close();
 
-        flash()->success('Data Alternatif ditambahkan!');
+        $this->dispatch('saved');
     }
 
     public function hitungTb($umur_bulan, $jenis_kelamin, $tb)
     {
-        $filepath = public_path('lhfa_0-to-5-years_zscores.xlsx');
-        $data = Excel::toArray(new ZscoreStandarImport, $filepath);
-        $standarData = $data[0];
+        $standarData = DB::table('lhfa')
+            ->where('month', (int)$umur_bulan)
+            ->where('gender', strtoupper($jenis_kelamin))
+            ->first();
+        
+        if (!$standarData) {
+            return null; 
+        }
 
-        return zscore_tb($umur_bulan, $jenis_kelamin, $tb, $standarData);
+        return zscore_tb($tb, $standarData);
     }
 
     public function hitungBb($umur_bulan, $jenis_kelamin, $bb)
     {
-        $filepath = public_path('wfa_0-to-5-years_zscores.xlsx');
-        $data = Excel::toArray(new ZscoreStandarImport, $filepath);
-        $standarData = $data[0];
+        $standarData = DB::table('wfa')
+            ->where('month', (int)$umur_bulan)
+            ->where('gender', strtoupper($jenis_kelamin))
+            ->first();
+        
+        if (!$standarData) {
+            return null; 
+        }
 
-        return zscore_bb($umur_bulan, $jenis_kelamin, $bb, $standarData);
+        return zscore_bb($bb, $standarData);
     }
 
     public function confirmHapus($id)

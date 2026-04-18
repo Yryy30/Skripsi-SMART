@@ -23,8 +23,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             KriteriaSeeder::class,
-            BalitaSeeder::class,
-            AlternatifSeeder::class,
+            //BalitaSeeder::class,
+            //AlternatifSeeder::class,
+            LhfaSeeder::class,
+            WfaSeeder::class,
         ]);
         
     }
