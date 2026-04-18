@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <title>Laporan Detail Deteksi Stunting</title>
@@ -9,26 +10,36 @@
       font-size: 11px;
       margin: 20px;
     }
-    h1, h2 {
+
+    h1,
+    h2 {
       text-align: center;
       margin: 0;
       font-size: 16px;
     }
+
     .info {
       margin: 10px 0;
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
       font-size: 10px;
     }
-    table, th, td {
+
+    table,
+    th,
+    td {
       border: 1px solid black;
     }
-    th, td {
+
+    th,
+    td {
       padding: 4px;
       text-align: center;
     }
+
     .logo {
       position: absolute;
       top: 10px;
@@ -36,6 +47,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <img src="{{ public_path('posyandu.png') }}" alt="Logo Posyandu" class="logo" width="50">
@@ -59,18 +71,21 @@
         <th>ASI</th>
         <th>MPASI</th>
         <th>Sanitasi</th>
+        <th>R. Penyakit Infeksi <p>(3bln terakhir)</p>
+        </th>
       </tr>
     </thead>
     <tbody>
-          <tr>
-              <td>{{ $alternatif->tb }}</td>
-              <td>{{ $alternatif->tb_zscore }}</td>
-              <td>{{ $alternatif->bb }}</td>
-              <td>{{ $alternatif->bb_zscore }}</td>
-              <td>{{ $alternatif->asi }}</td>
-              <td>{{ $alternatif->mpasi }}</td>
-              <td>{{ $alternatif->sanitasi }}</td>
-          </tr>
+      <tr>
+        <td>{{ $alternatif->tb }}</td>
+        <td>{{ $alternatif->tb_zscore }}</td>
+        <td>{{ $alternatif->bb }}</td>
+        <td>{{ $alternatif->bb_zscore }}</td>
+        <td>{{ $alternatif->asi }}</td>
+        <td>{{ $alternatif->mpasi }}</td>
+        <td>{{ $alternatif->sanitasi }}</td>
+        <td>{{ $alternatif->penyakit > 0 ? $alternatif->penyakit . ' kali' : 'Tidak Pernah' }}</td>
+      </tr>
     </tbody>
   </table>
 
@@ -83,5 +98,17 @@
     <p><strong>Intervensi:</strong> {{ $hasil['intervensi'] }}</p>
   </div>
 
+  <div style="width: 100%; margin-top: 40px;">
+    <div style="width: 250px; float: right; text-align: center;">
+      <p>Depok, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+      <p>Mengetahui,</p>
+
+      <br><br><br>
+
+      <p><strong>Ketua Kader</strong></p>
+    </div>
+  </div>
+
 </body>
+
 </html>
