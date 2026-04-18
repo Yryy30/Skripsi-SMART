@@ -6,10 +6,11 @@ if (!function_exists('hitungSmart')) {
      *
      * @param \Illuminate\Support\Collection\array\ $alternatif  Koleksi model Alternatif (dengan relasi ->balita)
      * @param array $bobot
+     * @param array $extraKeys
      * @return array {data_baku: Collection, utility: Collection, total_smart: Collection}
      * Semua Collection kosong jika $alternatif kosong.
      */
-    function hitungSmart($alternatif, array $bobot): array
+    function hitungSmart($alternatif, array $bobot, array $extraKeys = []): array
     {
         $alternatif = collect($alternatif);
 
@@ -33,11 +34,17 @@ if (!function_exists('hitungSmart')) {
         ];
 
         // Step 1: Hitung skor mentah
-        $data_baku = $alternatif->map(function ($item) use ($kriteria) {
+        $data_baku = collect($alternatif)->map(function ($item) use ($kriteria, $extraKeys) {
             $row = ['nama' => $item->balita->nama_balita];
+ 
+            foreach ($extraKeys as $field) {
+                $row[$field] = $item->{$field} ?? null;
+            }
+ 
             foreach ($kriteria as $key => $cfg) {
                 $row["skor_{$key}"] = ($cfg['fn'])($item);
             }
+ 
             return $row;
         });
 
@@ -51,8 +58,13 @@ if (!function_exists('hitungSmart')) {
         }
 
         // Step 3: Hitung utility tiap kriteria
-        $utility = $data_baku->map(function ($item) use ($kriteria, $min_max) {
+        $utility = $data_baku->map(function ($item) use ($kriteria, $min_max, $extraKeys) {
             $row = ['nama' => $item['nama']];
+ 
+            foreach ($extraKeys as $field) {
+                $row[$field] = $item[$field];
+            }
+ 
             foreach ($kriteria as $key => $cfg) {
                 $row["utility_{$key}"] = utility_smart(
                     $item["skor_{$key}"],
@@ -61,29 +73,42 @@ if (!function_exists('hitungSmart')) {
                     $cfg['tipe']
                 );
             }
+ 
             return $row;
         });
 
         // Step 4: Total SMART, kategori & intervensi
-        $total_smart = $utility->map(function ($item) use ($kriteria, $bobot) {
+        $total_smart = $utility->map(function ($item) use ($kriteria, $bobot, $extraKeys) {
             $total = 0;
+ 
             foreach ($kriteria as $key => $cfg) {
                 $total += ($item["utility_{$key}"] ?? 0) * ($bobot[$cfg['bobot']] ?? 0);
             }
-            $total = round($total, 4);
  
-            [$kategori, $intervensi] = match(true) {
-                $total <= 0.50 => ['Tinggi',   'Rujukan, PMT, monitoring intensif'],
-                $total <= 0.75 => ['Menengah', 'Edukasi, monitoring rutin'],
-                default        => ['Rendah',   'Edukasi ringan, kontrol berkala'],
+            $total      = round($total, 4);
+            $kategori   = match (true) {
+                $total <= 0.50 => 'Tinggi',
+                $total <= 0.75 => 'Menengah',
+                default        => 'Rendah',
+            };
+            $intervensi = match ($kategori) {
+                'Tinggi'   => 'Rujukan, PMT, monitoring intensif',
+                'Menengah' => 'Edukasi, monitoring rutin',
+                default    => 'Edukasi ringan, kontrol berkala',
             };
  
-            return [
+            $row = [
                 'nama'       => $item['nama'],
                 'total'      => $total,
                 'ket'        => $kategori,
                 'intervensi' => $intervensi,
             ];
+ 
+            foreach ($extraKeys as $field) {
+                $row[$field] = $item[$field];
+            }
+ 
+            return $row;
         });
  
         return [

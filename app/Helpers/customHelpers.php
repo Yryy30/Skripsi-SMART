@@ -107,15 +107,14 @@ if (!function_exists('skor_sanitasi')) {
 if (!function_exists('skor_penyakit')) {
     /**
      * Konversi data Riwayat Penyakit Infeksi ke dalam data baku
-     * @param string $riwayat_penyakit
+     * @param int $riwayat_penyakit
      * @return int|null
      */
     function skor_penyakit($riwayat_penyakit)
     {
-        $riwayat_penyakit = strtolower(trim($riwayat_penyakit));
-        if ($riwayat_penyakit === 'sering') return 5;
-        if ($riwayat_penyakit === 'jarang') return 3;
-        return 1;
+        if ($riwayat_penyakit >= 3) return 5; // Sering
+        if ($riwayat_penyakit >= 1) return 3; // Jarang
+        return 1; // Tidak Pernah
     }
 }
 
