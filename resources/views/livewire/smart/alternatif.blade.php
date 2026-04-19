@@ -23,17 +23,6 @@
                 <flux:button>Tambah Data</flux:button>
             </flux:modal.trigger>
         </div>
-        {{-- KANAN --}}
-        <div class="flex items-center gap-2">
-            <x-action-message on="saved" class="text-green-600 text-sm">
-                ✔ Data berhasil disimpan
-            </x-action-message>
-        </div>
-        <div class="flex items-center gap-2">
-            <x-action-message on="deleted" class="text-green-600 text-sm">
-                ✔ Data berhasil dihapus
-            </x-action-message>
-        </div>
     </div>
 
     {{-- Tabel Data Alternatif --}}

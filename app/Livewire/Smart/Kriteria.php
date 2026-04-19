@@ -34,7 +34,7 @@ class Kriteria extends Component
         $this->kriterias = ModelsKriteria::all()->toArray();
 
         Flux::modals()->close();
-        $this->dispatch('saved');
+        flash()->success('Bobot Kriteria Diperbarui!');
     }
 
     protected function normalisasiBobot()
