@@ -4,12 +4,6 @@
         <flux:modal.trigger name="edit-bobot">
             <flux:button>Edit Bobot</flux:button>
         </flux:modal.trigger>
-
-        <div class="flex gap-2">
-            <x-action-message on="saved" class="text-green-600 text-sm">
-                ✔ Bobot berhasil diubah
-            </x-action-message>
-        </div>
     </div>
 
     {{-- Tabel Kriteria --}}

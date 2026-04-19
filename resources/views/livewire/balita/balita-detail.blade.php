@@ -82,9 +82,9 @@
     <flux:separator variant="subtle" text="Pengukuran" />
 
     {{-- Tabel Data Balita --}}
-    <div class="overflow-x-auto mt-5">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <div class="overflow-x-auto mt-5 border rounded-lg">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs uppercase bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-6 py-3">tgl Pengukuran</th>
                 <th scope="col" class="px-6 py-3">tb</th>
@@ -92,10 +92,11 @@
                 <th scope="col" class="px-6 py-3">asi</th>
                 <th scope="col" class="px-6 py-3">mpasi</th>
                 <th scope="col" class="px-6 py-3">sanitasi</th>
+                <th scope="col" class="px-6 py-3">r. penyakit</th>
             </tr>
             </thead>
             <tbody>
-                @foreach ($alternatifs as $item)
+                @forelse ($alternatifs as $item)
                 <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
                     <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $item->tanggal_pengukuran }}</td>
                     <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $item->tb }}</td>
@@ -103,8 +104,16 @@
                     <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $item->asi }}</td>
                     <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $item->mpasi }}</td>
                     <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $item->sanitasi }}</td>
+                    <td class="px-6 py-2 text-gray-600 dark:text-gray-300">{{ $item->penyakit }}</td>
                 </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="6" class="py-10">
+                            <x-empty-state message="Belum ada data alternatif" />
+                        </td>
+                    </tr>
+                @endempty
+                @endforelse
             </tbody>
         </table>
     </div>

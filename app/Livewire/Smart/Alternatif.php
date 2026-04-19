@@ -47,15 +47,20 @@ class Alternatif extends Component
         $this->resetErrorBag();
     }
 
+    private function refreshListTanggal()
+    {
+        $this->listTanggal = AlternatifModel::select('tanggal_pengukuran')
+            ->distinct()
+            ->orderBy('tanggal_pengukuran')
+            ->pluck('tanggal_pengukuran')
+            ->toArray();
+    }
+
     public function mount()
     {
         $this->balitas = BalitaModel::all();
         
-        $this->listTanggal = AlternatifModel::select('tanggal_pengukuran')
-            ->distinct()
-            ->orderBy('tanggal_pengukuran', 'asc')
-            ->pluck('tanggal_pengukuran')
-            ->toArray();
+        $this->refreshListTanggal();
     }
 
     public function tambahAlternatif()
@@ -89,8 +94,9 @@ class Alternatif extends Component
 
         $this->resetInputField();
         Flux::modal('tambah-alternatif')->close();
+        $this->refreshListTanggal();
 
-        $this->dispatch('saved');
+        flash()->success('Data Alternatif Ditambahkan!');
     }
 
     public function hitungTb($umur_bulan, $jenis_kelamin, $tb)
@@ -129,10 +135,11 @@ class Alternatif extends Component
 
     public function hapusAlternatif()
     {
-        $balita = AlternatifModel::findOrFail($this->konfirmasiHapusId)->delete();
+        AlternatifModel::findOrFail($this->konfirmasiHapusId)->delete();
         $this->konfirmasiHapusId = null;
 
         Flux::modal('konfirmasi-hapus')->close();
+        $this->refreshListTanggal();
         flash()->success('Data Alternatif Dihapus!');
     }
 

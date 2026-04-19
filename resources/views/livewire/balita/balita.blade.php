@@ -4,15 +4,6 @@
         <flux:modal.trigger name="tambah-balita">
             <flux:button>Tambah Data</flux:button>
         </flux:modal.trigger>
-
-        <div class="flex gap-2">
-            <x-action-message on="saved" class="text-green-600 text-sm">
-                ✔ Data berhasil disimpan
-            </x-action-message>
-            <x-action-message on="deleted" class="text-green-600 text-sm">
-                ✔ Data berhasil dihapus
-            </x-action-message>
-        </div>
     </div>
 
     {{-- Tabel --}}
