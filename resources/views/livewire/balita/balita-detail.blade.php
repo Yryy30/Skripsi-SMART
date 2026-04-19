@@ -112,7 +112,6 @@
                             <x-empty-state message="Belum ada data alternatif" />
                         </td>
                     </tr>
-                @endempty
                 @endforelse
             </tbody>
         </table>
