@@ -16,7 +16,7 @@ class BalitaSeeder extends Seeder
         for ($i = 0; $i < 20; $i++) {
             $rand = rand(1, 100);
             if ($rand <= 70) {
-                $tgl_lahir = fake()->dateTimeBetween('-3 years', '-1 years');
+                $tanggalLahir = fake()->dateTimeBetween('-3 years', '-1 years');
             } elseif ($rand <= 85) {
                 $tanggalLahir = fake()->dateTimeBetween('-1 years', 'now');
             } else {
