@@ -24,7 +24,6 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             KriteriaSeeder::class,
             //BalitaSeeder::class,
-            //AlternatifSeeder::class,
             LhfaSeeder::class,
             WfaSeeder::class,
         ]);
