@@ -49,8 +49,12 @@
 </head>
 
 <body>
-
-  <img src="{{ public_path('posyandu.png') }}" alt="Logo Posyandu" class="logo" width="50">
+  @php
+      $logoPath = public_path('posyandu.png');
+      $logoData = base64_encode(file_get_contents($logoPath));
+      $logoSrc  = 'data:image/png;base64,' . $logoData;
+  @endphp
+  <img src="{{ $logoSrc }}" alt="Logo Posyandu" class="logo" width="50">
   <h1>LAPORAN DETAIL HASIL DETEKSI STUNTING</h1>
   <h2>POSYANDU JERUK</h2>
   <hr>

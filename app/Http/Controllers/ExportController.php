@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Alternatif as AlternatifModel;
 use App\Models\Kriteria as KriteriaModel;
-use Spatie\LaravelPdf\Facades\Pdf;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ExportController extends Controller
 {
@@ -23,11 +23,11 @@ class ExportController extends Controller
         $alternatif  = AlternatifModel::with('balita')->where('tanggal_pengukuran', $tanggal)->get();
         $total_smart = $this->runSmart($alternatif, $this->getBobot());
  
-        return Pdf::view('pages.smart.laporan', [
+        return Pdf::loadView('pages.smart.laporan', [
             'tanggal'     => $tanggal,
             'alternatif'  => $alternatif,
             'total_smart' => $total_smart,
-        ])->download("laporan_stunting_{$tanggal}.pdf");
+        ])->setPaper('a4', 'landscape')->download("laporan_stunting_{$tanggal}.pdf");
     }
 
     public function exportDetail(int $id)
@@ -42,9 +42,9 @@ class ExportController extends Controller
  
         $hasil = $total_smart->firstWhere('alternatif_id', $alternatif->alternatif_id);
  
-        return Pdf::view('pages.smart.laporan-detail', [
+        return Pdf::loadView('pages.smart.laporan-detail', [
             'alternatif' => $alternatif,
             'hasil'      => $hasil,
-        ])->download("detail_{$alternatif->balita->nama_balita}.pdf");
+        ])->setPaper('a4', 'landscape')->download("detail_{$alternatif->balita->nama_balita}.pdf");
     }
 }
