@@ -9,15 +9,7 @@ Project ini menggunakan **Laravel 12** dengan **Livewire (Volt + Flux)**
 * PHP >= 8.2
 * Composer
 * Node.js & NPM
-* Database (MySQL / SQLite)
-
-### 📌 Additional Requirement
-
-Untuk fitur generate PDF (menggunakan `spatie/laravel-pdf` & Browsershot), wajib install:
-
-```bash
-npm install puppeteer
-```
+* Database (MySQL / SQLite / PgSQL)
 
 ---
 
@@ -81,14 +73,6 @@ php artisan db:seed
 
 ```bash
 npm install
-```
-
----
-
-### 7. Install Puppeteer (WAJIB untuk PDF)
-
-```bash
-npm install puppeteer
 ```
 
 ---
